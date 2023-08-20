@@ -121,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           DataRow(cells: <DataCell>[
                             const DataCell(Text('IMC',
                                 style: TextStyle(fontWeight: FontWeight.bold))),
-                            DataCell(Text(formatter.format(imc))),
+                            DataCell(Text(imc.toStringAsFixed(2))),
                           ]),
                           DataRow(cells: <DataCell>[
                             const DataCell(Text('Resultado',
