@@ -1,4 +1,5 @@
 import 'package:app_imc/model/pessoa.dart';
+import 'package:app_imc/shared/widgets/imc_resultados.dart';
 import 'package:app_imc/utils/interpretador_imc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -67,72 +68,55 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text('Calculadora de IMC'),
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'Preencha suas informações',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints:
+              BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+          child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text(
+                      'Preencha suas informações',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    TextField(
+                      key: const Key('nome'),
+                      controller: nomeController,
+                      decoration: const InputDecoration(labelText: 'Nome'),
+                    ),
+                    TextField(
+                      key: const Key('peso'),
+                      controller: pesoController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(labelText: 'Peso (kg)'),
+                    ),
+                    TextField(
+                      key: const Key('altura'),
+                      controller: alturaController,
+                      keyboardType: TextInputType.number,
+                      decoration:
+                          const InputDecoration(labelText: 'Altura (m)'),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: calcularResultado,
+                      child: const Text('Calcular IMC'),
+                    ),
+                    const SizedBox(height: 20),
+                    imc == 0
+                        ? const Text('')
+                        : ImcResultados(imc, resultado, pessoa.nome),
+                  ],
                 ),
-                TextField(
-                  key: const Key('nome'),
-                  controller: nomeController,
-                  decoration: const InputDecoration(labelText: 'Nome'),
-                ),
-                TextField(
-                  key: const Key('peso'),
-                  controller: pesoController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Peso (kg)'),
-                ),
-                TextField(
-                  key: const Key('altura'),
-                  controller: alturaController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Altura (m)'),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: calcularResultado,
-                  child: const Text('Calcular IMC'),
-                ),
-                const SizedBox(height: 20),
-                imc == 0
-                    ? const Text('')
-                    : DataTable(
-                        columns: const <DataColumn>[
-                          DataColumn(label: Text('')),
-                          DataColumn(label: Text('')),
-                        ],
-                        rows: <DataRow>[
-                          DataRow(cells: <DataCell>[
-                            const DataCell(Text(
-                              'Nome',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )),
-                            DataCell(Text(pessoa.nome)),
-                          ]),
-                          DataRow(cells: <DataCell>[
-                            const DataCell(Text('IMC',
-                                style: TextStyle(fontWeight: FontWeight.bold))),
-                            DataCell(Text(imc.toStringAsFixed(2))),
-                          ]),
-                          DataRow(cells: <DataCell>[
-                            const DataCell(Text('Resultado',
-                                style: TextStyle(fontWeight: FontWeight.bold))),
-                            DataCell(Text(resultado)),
-                          ]),
-                        ],
-                      ),
-              ],
-            ),
-          )),
+              )),
+        ),
+      ),
     );
   }
 }
