@@ -30,19 +30,25 @@ class _ImcFormState extends State<ImcForm> {
 
   void calcularResultado() async {
     try {
-      setState(() {
-        pessoa = Pessoa(
-          nomeController.text,
-          double.parse(pesoController.text),
-          double.parse(alturaController.text),
-        );
-        imc = pessoa.calcularIMC();
-        resultado = interpretarIMC(imc);
-      });
+      var novaPessoa = Pessoa(
+        nomeController.text,
+        double.parse(pesoController.text),
+        double.parse(alturaController.text),
+      );
+      var novoImc = pessoa.calcularIMC();
+      var novoResultado = interpretarIMC(imc);
 
       repository.addResultado(Resultado(pessoa.nome, imc, resultado));
-      resultados = await repository.getResultados();
-      setState(() {});
+
+      var novosResultados = await repository.getResultados();
+
+      setState(() {
+        pessoa = novaPessoa;
+        imc = novoImc;
+        resultado = novoResultado;
+        resultados = novosResultados;
+      });
+
       nomeController.clear();
       pesoController.clear();
       alturaController.clear();
